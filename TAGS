@@ -4,7 +4,7 @@ matrixio.h,133
 inline std::ostream& operator << operator <<7,88
 inline std::istream& operator >> operator >>22,415
 
-matrix.h,992
+simpleMatrix.h,992
 #define __MATRIX_H__8,172
 inline int round(18,355
 #define INFINITY 23,423

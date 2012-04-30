@@ -1,7 +1,7 @@
 #ifndef __MATRIX_IO_H__
 #define __MATRIX_IO_H__
 
-#include "matrix.h"
+#include "simpleMatrix.h"
 
 template<class T>
 inline std::ostream& operator << (std::ostream &os, const matrix_t<T>& a)

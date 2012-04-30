@@ -1,5 +1,5 @@
 /*!
-  @file matrix.h
+  @file simpleMatrix.h
   @brief Matrix operation definition
   all functions in this header file is defined as "inline" for performance consideration
 */

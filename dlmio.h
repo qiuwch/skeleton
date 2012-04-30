@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "matrix.h"
+#include "simpleMatrix.h"
 #include "matrixio.h"
 
 using namespace std;

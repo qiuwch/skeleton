@@ -1,137 +1,44 @@
-#include "matrix.h"
-#include "matrixio.h"
-#include "dlmio.h"
-#include <vector>
+#include "floyd.h"
 
 using namespace std;
 
 bool DEBUG = false;
 
-struct path_t
+void addSegment(int i, int j, vector<int>& vecpath, const matrix_t<int>& mid)
 {
-    path_t *leftPath;
-    path_t *rightPath;
-    int mid; // node id
-    int start;
-    int end;
-};
-
-void addSegment(const path_t* segment, vector<int>& vpath)
-{
-    if (segment->leftPath->mid != 0) 
+    int k = mid[i][j];
+    if (k != 0)
     {
-        addSegment(segment->leftPath, vpath);
-    }
-    if (segment->mid != 0) vpath.push_back(segment->mid);
-    if (segment->rightPath->mid != 0)
-    {
-        addSegment(segment->rightPath, vpath);
-    }
-}
-
-vector<int> translate(const path_t &path)
-{
-    vector<int> vpath;
-    vpath.push_back(path.start);
-    addSegment(&path, vpath);
-    vpath.push_back(path.end);
-    return vpath;
-}
-
-ostream& operator << (ostream &os, const path_t& p)
-{
-    vector<int> v = translate(p);
-
-    vector<int>::iterator iter;
-    os << "Path: ";
-    for (iter = v.begin(); iter < v.end(); iter++)
-    {
-        os << *iter << " ";
-    }
-    return os;
-}
-
-
-bool floyd(matrix_t<double>& G, matrix_t<double>& minDist, matrix_t<int>& mid);
-bool genPath(matrix_t<int>& mid, matrix_t<path_t>& outPath);
-
-int main()
-{
-    matrix_t<double> G = dlmread("test/G.txt", ',');
-    matrix_t<double> minDist(0,0);
-    matrix_t<int> mid(0,0);
-    floyd(G, minDist, mid);
-    
-    dlmwrite("test/minDist.txt", minDist, ',');
-    dlmwrite("test/mid.txt", mid, ',');
-
-    matrix_t<path_t> path(0,0);
-    genPath(mid, path);
-
-    for (int i = 0; i<500; i++)
-    {
-        cout << path[0][i] << endl;
-    }
-    // cout << path[1][10] << endl;
-
-    return 0;
-}
-
-path_t* minPath(matrix_t<int>& mid, matrix_t<path_t>& path, matrix_t<bool>& flag, int i, int j)
-{
-    if (flag[i][j])
-    {
-        return &path[i][j];
-    }
-
-    path_t p;
-    int midNode = mid[i][j];
-    if (midNode == 0)
-    {
-        p.leftPath = &path[i][i];
-        p.rightPath = &path[j][j];
-        p.mid = 0;
-        p.start = i;
-        p.end = j;
+        addSegment(i, k, vecpath, mid);
+        vecpath.push_back(k);
+        addSegment(k, j, vecpath, mid);
     }
     else
     {
-        p.leftPath = minPath(mid, path, flag, i, midNode);
-        p.rightPath = minPath(mid, path, flag, midNode, j);
-        p.mid = midNode;
-        p.start = p.leftPath->start;
-        p.end = p.rightPath->end;
+        return;
     }
-    path[i][j] = p;
-    flag[i][j] = true;
-    return &path[i][j];
 }
 
-bool genPath(matrix_t<int>& mid, matrix_t<path_t>& outPath)
+bool genPath(matrix_t<int>& mid, matrix_t<vector<int> >& outPath)
 {
     int i = 0, j = 0, n = 0;
     n = mid.height;
 
-    matrix_t<bool> flag(n, n);
-    matrix_t<path_t> path(n, n);
+    matrix_t<vector<int> > path(n, n);
 
     for (i = 0; i < n; i++)
     {
-        path_t p;
-        p.start = i;
-        p.end = i;
-        p.mid = 0;
-        p.leftPath = &path[i][i];
-        p.rightPath = &path[i][i];
-        path[i][i] = p;
-        flag[i][i] = true;
-    }
-
-    for (i = 0; i < n; i++)
         for (j = 0; j < n; j++)
         {
-            minPath(mid, path, flag, i, j);
+            vector<int> vecpath;
+            vecpath.push_back(i);
+            addSegment(i, j, vecpath, mid);
+            vecpath.push_back(j);
+
+            path[i][j] = vecpath;
         }
+    }
+
     outPath = path;
     return true;
 }
