@@ -1,0 +1,4 @@
+/home/qiuwch/Project/Skeleton1/mex/floyd.cc:18:11: error: expected '(' after 'while'
+    while f.
+          ^
+1 error generated.

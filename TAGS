@@ -1,0 +1,39 @@
+
+matrixio.h,133
+#define __MATRIX_IO_H__2,24
+inline std::ostream& operator << operator <<7,88
+inline std::istream& operator >> operator >>22,415
+
+matrix.h,992
+#define __MATRIX_H__8,172
+inline int round(18,355
+#define INFINITY 23,423
+#define isfinite 24,474
+#define _USE_MATH_DEFINES25,499
+class region_t33,591
+	region_t(region_t::region_t36,616
+	region_t(region_t::region_t37,631
+	int width(region_t::width44,747
+	int height(region_t::height45,784
+	int xl,region_t::xl46,822
+	int xl, xr,region_t::xr46,822
+	int xl, xr, yt,region_t::yt46,822
+	int xl, xr, yt, yb;region_t::yb46,822
+class matrix_t50,865
+	matrix_t(matrix_t::matrix_t53,890
+	~matrix_t(matrix_t::~matrix_t65,1157
+	inline void min(matrix_t::min75,1264
+	inline void max(matrix_t::max94,1532
+	T *p;matrix_t::p112,1802
+	int width;matrix_t::width113,1809
+	int height;matrix_t::height114,1821
+	int len;matrix_t::len115,1834
+inline void divide_s(121,1868
+inline void multiply_s(145,2186
+inline void add_s(169,2506
+inline void add_m(193,2828
+inline void matrix_copy(223,3385
+inline void matrix_set(244,3748
+inline bool operator ==(operator ==271,4107
+
+./floyd.cc,include
