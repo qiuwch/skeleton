@@ -6,11 +6,12 @@ bool DEBUG = false;
 
 void addSegment(int i, int j, vector<int>& vecpath, const matrix_t<int>& mid)
 {
-    int k = mid[i][j];
-    if (k != 0)
+    int k = mid[i][j] - 1; 
+// vertex id stored in mid start from 1
+    if (k != -1)
     {
         addSegment(i, k, vecpath, mid);
-        vecpath.push_back(k);
+        vecpath.push_back(k+1);
         addSegment(k, j, vecpath, mid);
     }
     else
@@ -31,9 +32,9 @@ bool genPath(matrix_t<int>& mid, matrix_t<vector<int> >& outPath)
         for (j = 0; j < n; j++)
         {
             vector<int> vecpath;
-            vecpath.push_back(i);
+            vecpath.push_back(i+1);
             addSegment(i, j, vecpath, mid);
-            vecpath.push_back(j);
+            vecpath.push_back(j+1);
 
             path[i][j] = vecpath;
         }
@@ -45,7 +46,6 @@ bool genPath(matrix_t<int>& mid, matrix_t<vector<int> >& outPath)
 
 bool floyd(matrix_t<double>& G, matrix_t<double>& outMinDist, matrix_t<int>& outMid)
 {
-    cout << "Begin" << endl;
     int nrow = 0, ncol = 0;
     nrow = G.height;
     ncol = G.width;
@@ -71,7 +71,7 @@ bool floyd(matrix_t<double>& G, matrix_t<double>& outMinDist, matrix_t<int>& out
                 {
                     // cout << "Update" << endl;
                     minDist[i][j] = midDist;
-                    mid[i][j] = k;
+                    mid[i][j] = k + 1;
                 }
             }
     outMinDist = minDist;

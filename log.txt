@@ -1,0 +1,6 @@
+Read data from matlab.
+Floyd algorithm begin.
+Generate path from result.
+Calulation done, convert to matlab data structure.
+Convert distance matrix done.
+Convert path matrix done.
