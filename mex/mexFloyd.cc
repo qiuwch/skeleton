@@ -22,7 +22,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
         return;
     }
 
-    if (nlhs != 2)
+    if (nlhs < 2)
     {
         mexPrintf("Wrong number of output parameters, 2 needed, %d specified\n", nlhs);
         return;
@@ -44,8 +44,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
     mxArray *mxpath = mxCreateCellMatrix(m, n);
     // mxArray *mxCreateCellMatrix(mwSize m, mwSize n);
 
+
     plhs[0] = mxdist;
     plhs[1] = mxpath;
+
 
     log(fid, "Read data from matlab.\n");
     double *pointer = mxGetPr(mxG);    
@@ -57,6 +59,17 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
 
     log(fid, "Floyd algorithm begin.\n");
     floyd(G, dist, mid);
+
+
+    if (nlhs == 3)
+    {
+        mxArray *mxmid = mxCreateDoubleMatrix(m, n, mxREAL);
+        plhs[2] = mxmid;
+        double *mxmidPointer = mxGetPr(mxdist);
+        for (int i = 0; i < mid.len; i++)
+            mxmidPointer[i] = mid.p[i];
+    }
+
     log(fid, "Generate path from result.\n");
     genPath(mid, path);
 
