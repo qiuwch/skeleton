@@ -1,4 +1,7 @@
 *~
+*.log # log file
+*.png # result diagram
+
 # Compiled Object files
 *.slo
 *.lo
