@@ -20,7 +20,7 @@ void addSegment(int i, int j, vector<int>& vecpath, const matrix_t<int>& mid)
     }
 }
 
-bool genPath(matrix_t<int>& mid, matrix_t<vector<int> >& outPath)
+bool genPath(matrix_t<int>& mid, matrix_t<double>& dist, matrix_t<vector<int> >& outPath)
 {
     int i = 0, j = 0, n = 0;
     n = mid.height;
@@ -36,6 +36,10 @@ bool genPath(matrix_t<int>& mid, matrix_t<vector<int> >& outPath)
             addSegment(i, j, vecpath, mid);
             vecpath.push_back(j+1);
 
+// BUG fix: if the distance between start node and end node is inf
+// there should be no path
+			if (vecpath.size() == 2 && dist[i][j] == INFINITY)
+				continue;
             path[i][j] = vecpath;
         }
     }

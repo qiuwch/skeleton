@@ -63,15 +63,19 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
 
     if (nlhs == 3)
     {
+		log(fid, "Convert mid matrix to matlab.\n");
         mxArray *mxmid = mxCreateDoubleMatrix(m, n, mxREAL);
         plhs[2] = mxmid;
-        double *mxmidPointer = mxGetPr(mxdist);
+        double *mxmidPointer = mxGetPr(mxmid);
         for (int i = 0; i < mid.len; i++)
+		{
+			// mexPrintf("%d %d\n", i, mid.p[i]);
             mxmidPointer[i] = mid.p[i];
+		}
     }
 
     log(fid, "Generate path from result.\n");
-    genPath(mid, path);
+    genPath(mid, dist, path);
 
     log(fid, "Calulation done, convert to matlab data structure.\n");
 
@@ -92,6 +96,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
             // Node index range is from 0 to 65535
             vector<int> vecpath = path[i][j];
             size_t l = vecpath.size();
+			// BUG fix: if l == 0 means there is no path between i and j
             mxArray *pathArray = mxCreateNumericMatrix(1, l, mxUINT16_CLASS, mxREAL);
             uint16_t *pathPointer = (uint16_t*)mxGetData(pathArray);
 

@@ -4,7 +4,6 @@ function testFloyd()
     [G1, next] = floyd(G);
     fprintf('Time of matlab floyd %f\n', toc);
     mid = dlmread('test/mid.txt');
-    mid = mid;
     
     tic;
     [shortest_path_distance_matrix, path] = mexFloyd(G);

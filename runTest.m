@@ -1,10 +1,11 @@
 function runTest()
     close all;
-    addpath plot
-    binImage = imread('data/obj10_10.bmp');
-    imshow(binImage);
+    addpath plot;
+    addpath mex;
+    addpath func;
+    binImage = imread('obj10_10.bmp');
+
     runSingleImage(binImage);
-    pause;
 end
 
 function runMultipleImages()
@@ -16,64 +17,58 @@ function runMultipleImages()
         binImage = imread(fullname);
         imshow(binImage);
         runSingleImage(binImage);
-        pause;
     end
 end
 
 function runSingleImage(binImage)
+    figBinImage = figure();
+    imshow(binImage);
     n = 500;
-    points = sample(binImage, n);
-    W = genGraph(points);
-    G = pruneGraph(W, 5);
-    dlmwrite('mex/G.txt', G);
-    keyboard;
+    points = RandSample(binImage, n);
     
-    %      r = 5;
-    %      for r = 1:10
-    %          G = pruneGraph(W, r);
-    %          % G = pruneGraph(W, 5 * sqrt(2) + 0.1);
-    %          visualizeConnectGraph(points, G);
-    %      end
+    W = GenGraph(points);
+    G = PruneGraph(W, 5);
     
-    % path = genPath(W, 5);
-    % path = 1:length(points);
+    [dist, path, mid] = mexFloyd(G);
 
-    G1 = G;
-    [G, mid] = floyd(G1);
-    % keyboard;
+    % Plot all shortest path
+    figSamplePoints = figure();
+    PlotPoints(points, 'b');
+    %     hold on;
+    %     x = [];
+    %     y = [];
+    %{ Draw path, useless
+    %     for i = 1:n
+    %         for j = i:n
+    %             if isempty(path{i,j})
+    %                 fprintf('Empty path! Point %d is not reachable\n', j);
+    %                 plot(points(j,1), points(j, 2), 'y*');
+    %             end
+    %             p = path{i, j};
+    %             x = [x; nan; points(p, 1)];
+    %             y = [y; nan; points(p, 2)];
+    %             PlotPath(points, path{i, j});
+    %             disp(path{i, j});
+    %         end
+    %         disp(i);
+    %         pause;
+    %     end
+    %     line(x, y);
+    %     pause;
+    %}
 
-    path = cell(n, n);
-    for i = 1:n
-        disp(i);            
-        tic
-        for j = 1:i
-            ijpath = getPath(G, mid, i, j);
+    figPathPoint = figure;
+    MarkPointsInPath(points, mid);
+    figFarthestPoint = figure;
+    MarkFarthestPoints(points, dist);
 
-            cost = sumPath(G1, ijpath, i, j);
-            if cost ~= inf && G(i,j) ~= inf
-                assert((cost - G(i,j) < 0.00001));
-            end
-            
-            path{i,j} = ijpath;
-            path{j,i} = fliplr(ijpath);
-        end
-        toc
-    end
-    keyboard;
-
-%     dpMinDistance(G);
-    path = genPointToPointPath(G, 1, 5);
-    plotPath(points, path);
-    path = genPointToPointPath(W, 1, 5);
-    plotPath(points, path);
-    
-    % plotPoints(points, G);
+    figure(figBinImage);
+    print('-dpng', 'binImage.png');
+    figure(figSamplePoints);
+    print('-dpng', 'sampledPoints.png');
+    figure(figPathPoint);
+    print('-dpng', 'pathPoint.png');
+    figure(figFarthestPoint);
+    print('-dpng', 'farPoint.png');
 end
 
-function cost = sumPath(G1, path, i, j)
-    startNode = [i, path];
-    endNode = [path, j];
-    idx = sub2ind(size(G1), startNode, endNode);
-    singleCosts = G1(idx);
-    cost = sum(singleCosts);
-end

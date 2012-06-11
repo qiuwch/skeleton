@@ -7,7 +7,7 @@
 using namespace std;
 
 bool floyd(matrix_t<double>& G, matrix_t<double>& minDist, matrix_t<int>& mid);
-bool genPath(matrix_t<int>& mid, matrix_t<vector<int> >& outPath);
+bool genPath(matrix_t<int>& mid, matrix_t<double>& dist, matrix_t<vector<int> >& outPath);
 
 inline ostream& operator<<(ostream& os, const vector<int>& path)
 {
