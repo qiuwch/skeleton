@@ -1,4 +1,4 @@
-function points = sample(binImage, num)
+function points = RandSample(binImage, num)
     sz = size(binImage);
     h = sz(1);
     w = sz(2);

@@ -14,7 +14,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
   const mxArray *prhs[])
 {
     FILE *fid;
-    fid = fopen("log.txt", "w+");
+    fid = fopen("MexFloyd.log", "w+");
 
     if (nrhs != 1)
     {

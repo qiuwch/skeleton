@@ -1,4 +1,4 @@
-function points = sample1(binImage, interval)
+function points = GridSample(binImage, interval)
     sz = size(binImage);
     h = sz(1);
     w = sz(2);

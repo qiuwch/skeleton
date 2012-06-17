@@ -1,4 +1,4 @@
-function [G, next] = floyd(G1)
+function [G, next] = Floyd(G1)
     n = size(G1, 1);
     G = G1;
     next = zeros(size(G));

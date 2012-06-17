@@ -1,4 +1,4 @@
-function G = pruneGraph(W, r)
+function G = PruneGraph(W, r)
     G = W;
     G(G>r) = inf;
 end

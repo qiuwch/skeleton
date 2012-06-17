@@ -1,4 +1,4 @@
-function W = genGraph(points)
+function W = GenGraph(points)
     pointCoordinate = points(:, 1:2);
     n = length(pointCoordinate);
     W = zeros(n, n);
