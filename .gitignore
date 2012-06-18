@@ -1,4 +1,5 @@
 *~
+*.asv
 *.log # log file
 *.png # result diagram
 
