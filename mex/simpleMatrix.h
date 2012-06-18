@@ -53,6 +53,7 @@ class matrix_t
 public:
 	matrix_t(int rows, int cols, T *p = 0)
 	{
+		std::cout << "construct." << std::endl;
 		this->width = cols;
 		this->height = rows;
 		this->len = cols * rows;
@@ -64,8 +65,10 @@ public:
 		}
 	}
 
+	// copy constructor
     matrix_t(const matrix_t& from)
     {
+		std::cout << "construct." << std::endl;
         this->width = from.width;
         this->height = from.height;
         this->len = from.len;
@@ -77,6 +80,7 @@ public:
 
 	~matrix_t()
 	{
+		std::cout << "destruct." << std::endl;
         this->p = NULL; 
 // This is very important, I don't know why
 // Can not pass test case without this

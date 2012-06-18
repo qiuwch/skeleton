@@ -2,6 +2,7 @@
 *.asv
 *.log # log file
 *.png # result diagram
+*.swp
 
 # Compiled Object files
 *.slo

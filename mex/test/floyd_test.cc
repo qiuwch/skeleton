@@ -12,7 +12,7 @@ int main()
     dlmwrite("mid.txt", mid, ',');
 
     matrix_t<vector<int> > path(0,0);
-    genPath(mid, path);
+    genPath(mid, minDist, path);
 
     for (int i = 0; i<500; i++)
     {

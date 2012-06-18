@@ -6,7 +6,7 @@ mexfloyd = ../mexFloyd.cc
 test: floyd_test1 dlmio_test
 
 floyd_test1: $(floyd) $(dlmio)
-	clang++ $(floyd) $(dlmio) -o floyd_test1 -Wall -g
+	clang++ $(floyd) $(dlmio) -o floyd_test1 -Wall -O3
 
 floyd_test2: $(floyd) $(dlmio)
 	g++ $(floyd) $(dlmio) -o floyd_test2 -Wall -O3
@@ -14,3 +14,5 @@ floyd_test2: $(floyd) $(dlmio)
 dlmio_test:
 	clang++ ../dlmio.cc dlmio_test.cc -o dlmio_test -g -Wall
 
+clean:
+	rm dlmio_test floyd_test1 -f
