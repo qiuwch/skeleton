@@ -67,10 +67,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
         mxArray *mxmid = mxCreateDoubleMatrix(m, n, mxREAL);
         plhs[2] = mxmid;
         double *mxmidPointer = mxGetPr(mxmid);
-        for (int i = 0; i < mid.len; i++)
+        for (int i = 0; i < mid.len_; i++)
 		{
 			// mexPrintf("%d %d\n", i, mid.p[i]);
-            mxmidPointer[i] = mid.p[i];
+            mxmidPointer[i] = mid.p_[i];
 		}
     }
 
@@ -84,8 +84,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
     // void mxSetPr(mxArray *pm, double *pr);
     // mxSetPr(mxdist, dist.p);  // This is wrong.
     double *mxdistPointer = mxGetPr(mxdist);
-    for (i = 0; i < dist.len; i++)
-        mxdistPointer[i] = dist.p[i];
+    for (i = 0; i < dist.len_; i++)
+        mxdistPointer[i] = dist.p_[i];
 
     log(fid, "Convert distance matrix done.\n");
 

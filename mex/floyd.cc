@@ -23,7 +23,7 @@ void addSegment(int i, int j, vector<int>& vecpath, const matrix_t<int>& mid)
 bool genPath(matrix_t<int>& mid, matrix_t<double>& dist, matrix_t<vector<int> >& outPath)
 {
     int i = 0, j = 0, n = 0;
-    n = mid.height;
+    n = mid.height_;
 
     matrix_t<vector<int> > path(n, n);
 
@@ -51,8 +51,8 @@ bool genPath(matrix_t<int>& mid, matrix_t<double>& dist, matrix_t<vector<int> >&
 bool floyd(matrix_t<double>& G, matrix_t<double>& outMinDist, matrix_t<int>& outMid)
 {
     int nrow = 0, ncol = 0;
-    nrow = G.height;
-    ncol = G.width;
+    nrow = G.height_;
+    ncol = G.width_;
 
     if (nrow != ncol)
     {

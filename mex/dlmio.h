@@ -25,12 +25,12 @@ inline bool dlmwrite(string filename, matrix_t<T>& mat, char sepchar)
         return false;
     }
     
-    for (int row = 0; row < mat.height; row++)
+    for (int row = 0; row < mat.height_; row++)
     {
-        for (int col = 0; col < mat.width; col++)
+        for (int col = 0; col < mat.width_; col++)
         {
             f << mat[row][col];
-            if (col != mat.width - 1) f << sepchar;
+            if (col != mat.width_ - 1) f << sepchar;
         }
         f << endl;
     }

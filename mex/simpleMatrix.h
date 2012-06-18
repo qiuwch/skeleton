@@ -53,7 +53,6 @@ class matrix_t
 public:
 	matrix_t(int rows, int cols, T *p = 0)
 	{
-		std::cout << "construct." << std::endl;
 		this->width_ = cols;
 		this->height_ = rows;
 		this->len_ = cols * rows;
@@ -66,28 +65,41 @@ public:
 	}
 
 	// copy constructor
-    matrix_t(const matrix_t& from)
+    matrix_t(const matrix_t<T>& source)
     {
-		std::cout << "construct." << std::endl;
-        this->width_ = from.width_;
-        this->height_ = from.height_;
-        this->len_ = from.len_;
-        this->p_ = new T[from.len_];
+        this->width_ = source.width_;
+        this->height_ = source.height_;
+        this->len_ = source.len_;
+        this->p_ = new T[source.len_];
         memset(this->p_, 0, sizeof(T) * len_);
+        // use memcpy
         for (int i = 0; i < this->len_; i++)
-            this->p_[i] = from.p_[i];
+            this->p_[i] = source.p_[i];
     }
 
 	~matrix_t()
 	{
 		std::cout << "destruct." << std::endl;
-        this->p_ = NULL; 
+        // this->p_ = NULL; 
 // This is very important, I don't know why
 // Can not pass test case without this
         // std::cout << "Destruct." << std::endl;
 		delete []p_;
+		this->p_ = NULL;
 	}
     
+    inline matrix_t<T>& operator=(const matrix_t<T> source)
+    {
+        this->width_ = source.width_;
+        this->height_ = source.height_;
+        this->len_ = source.len_;
+        delete[] this->p_;
+        this->p_ = new T[len_];
+        for (int i = 0; i < this->len_; i++)
+            this->p_[i] = source.p_[i];
+        return *this;
+    }
+
 	inline T* operator[](int index) const
 	{
         if (index < 0 || index >= this->height_)

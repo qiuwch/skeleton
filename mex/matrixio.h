@@ -6,10 +6,10 @@
 template<class T>
 inline std::ostream& operator << (std::ostream &os, const matrix_t<T>& a)
 {
-    std::cout << a.height << " " << a.width << std::endl;
-	for (int row = 0; row < a.height; row++)
+    std::cout << a.height_ << " " << a.width_ << std::endl;
+	for (int row = 0; row < a.height_; row++)
 	{
-		for (int col = 0; col < a.width; col++)
+		for (int col = 0; col < a.width_; col++)
 		{
             // std::cout << row << " " << col << std::endl;
 			os << a[row][col] << " ";
