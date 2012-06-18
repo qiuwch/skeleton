@@ -54,14 +54,14 @@ public:
 	matrix_t(int rows, int cols, T *p = 0)
 	{
 		std::cout << "construct." << std::endl;
-		this->width = cols;
-		this->height = rows;
-		this->len = cols * rows;
-		this->p = new T[len];
-		memset(this->p, 0, sizeof(T) * len); // Important!
+		this->width_ = cols;
+		this->height_ = rows;
+		this->len_ = cols * rows;
+		this->p_ = new T[len_];
+		memset(this->p_, 0, sizeof(T) * len_); // Important!
 		if (p != 0)
 		{
-			for (int i = 0; i<len; i++) this->p[i] = p[i];
+			for (int i = 0; i<len_; i++) this->p_[i] = p[i];
 		}
 	}
 
@@ -69,41 +69,41 @@ public:
     matrix_t(const matrix_t& from)
     {
 		std::cout << "construct." << std::endl;
-        this->width = from.width;
-        this->height = from.height;
-        this->len = from.len;
-        this->p = new T[from.len];
-        memset(this->p, 0, sizeof(T) * len);
-        for (int i = 0; i < this->len; i++)
-            this->p[i] = from.p[i];
+        this->width_ = from.width_;
+        this->height_ = from.height_;
+        this->len_ = from.len_;
+        this->p_ = new T[from.len_];
+        memset(this->p_, 0, sizeof(T) * len_);
+        for (int i = 0; i < this->len_; i++)
+            this->p_[i] = from.p_[i];
     }
 
 	~matrix_t()
 	{
 		std::cout << "destruct." << std::endl;
-        this->p = NULL; 
+        this->p_ = NULL; 
 // This is very important, I don't know why
 // Can not pass test case without this
         // std::cout << "Destruct." << std::endl;
-		delete []p;
+		delete []p_;
 	}
     
 	inline T* operator[](int index) const
 	{
-        if (index < 0 || index >= this->height)
+        if (index < 0 || index >= this->height_)
         {
-            fprintf(stderr, "Row index out of bound, index %d, rows %d\n", index, this->height);
+            fprintf(stderr, "Row index out of bound, index %d, rows %d\n", index, this->height_);
             return NULL;
         }
-		return p + index*width;
+		return p_ + index*width_;
 	}
 	
 	inline void min(T *val, int *x, int *y)
 	{
 		T min = INFINITY;
 		T* pmin;
-		T* pp = this->p;
-		while(pp < this->p+len)
+		T* pp = this->p_;
+		while(pp < this->p_+len_)
 		{
 			if (min > *pp) 
 			{
@@ -113,16 +113,16 @@ public:
 			pp++;
 		}
 		*val = min;
-		*y = (pmin - p) / width;
-		*x = (pmin - p) % width;
+		*y = (pmin - p_) / width_;
+		*x = (pmin - p_) % width_;
 	}
 
 	inline void max(T *val, int *x, int *y)
 	{
 		T max = -INFINITY;
 		T* pmax;
-		T* pp = this->p;
-		while(pp < this->p+len)
+		T* pp = this->p_;
+		while(pp < this->p_+len_)
 		{
 			if (max < *pp) 
 			{
@@ -132,13 +132,13 @@ public:
 			pp++;
 		}
 		*val = *pmax;
-		*y = (pmax - p) / width;
-		*x = (pmax - p) % width;
+		*y = (pmax - p_) / width_;
+		*x = (pmax - p_) % width_;
 	}
-	T *p;
-	int width;
-	int height;
-	int len;
+	T *p_;
+	int width_;
+	int height_;
+	int len_;
 
 };
 
@@ -148,9 +148,9 @@ inline void divide_s(matrix_t<T> *m, const float f, const region_t *r=0)
 {
 	if (r == 0)
 	{
-		T *p = m->p;
+		T *p = m->p_;
 		int i = 0;
-		while (i < m->len)
+		while (i < m->len_)
 		{
 			p[i++] /= f;
 		}
@@ -172,9 +172,9 @@ inline void multiply_s(matrix_t<T> *m, const float f, const region_t *r=0)
 {
 	if (r == 0)
 	{
-		T *p = m->p;
+		T *p = m->p_;
 		int i = 0;
-		while (i < m->len)
+		while (i < m->len_)
 		{
 			p[i++] *= f;
 		}
@@ -196,9 +196,9 @@ inline void add_s(matrix_t<T> *m, const T f, const region_t *r=0)
 {
 	if (r == 0)
 	{
-		T *p = m->p;
+		T *p = m->p_;
 		int i = 0;
-		while (i < m->len)
+		while (i < m->len_)
 		{
 			p[i++] += f;
 		}
@@ -220,10 +220,10 @@ inline void add_m(matrix_t<T1> *m1, const matrix_t<T2> *m2, const region_t *r1=0
 {
 	if (r1 == 0 && r2 == 0)
 	{
-		T1 *p1 = m1->p;
-		T2 *p2 = m2->p;
+		T1 *p1 = m1->p_;
+		T2 *p2 = m2->p_;
 
-		while (p1 < m1->p + m1->len)
+		while (p1 < m1->p_ + m1->len_)
 		{
 			*p1++ += *p2++;
 		}
@@ -250,12 +250,12 @@ inline void matrix_copy(matrix_t<T1> *m1, const matrix_t<T2> *m2, const region_t
 {
 	if (r1 == 0 && r2 == 0)
 	{
-		assert(m1->width == m2->width);
-		assert(m1->height == m2->height);
+		assert(m1->width_ == m2->width_);
+		assert(m1->height_ == m2->height_);
 		
-		T1 *p1 = m1->p;
-		T2 *p2 = m2->p;
-		while (p1 < m1->p + m1->len)
+		T1 *p1 = m1->p_;
+		T2 *p2 = m2->p_;
+		while (p1 < m1->p_ + m1->len_)
 		{
 			*p1++ = *p2++;
 		}
@@ -271,8 +271,8 @@ inline void matrix_set(matrix_t<T> *m, T v, const region_t *r=0)
 {
 	if (r == 0)
 	{
-		T *p = m->p;
-		while (p < m->p + m->len)
+		T *p = m->p_;
+		while (p < m->p_ + m->len_)
 		{
 			*p++ = v;
 		}
@@ -296,10 +296,10 @@ inline void matrix_set(matrix_t<T> *m, T v, const region_t *r=0)
 template<class T>
 inline bool operator ==(const matrix_t<T>& a, const matrix_t<T>& b)
 {
-	if (a.width != b.width || a.height != b.height)
+	if (a.width_ != b.width_ || a.height_ != b.height_)
 		return false;
-	for (int row = 0; row < a.height; row++)
-		for (int col = 0; col < a.width; col++)
+	for (int row = 0; row < a.height_; row++)
+		for (int col = 0; col < a.width_; col++)
 		{
 			if (abs(a[row][col] - b[row][col]) > 0.0001) return false;
 		}
